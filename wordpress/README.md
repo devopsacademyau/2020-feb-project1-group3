@@ -20,3 +20,4 @@ docker tag wordpress:latest 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad
 
 #### Run the following command to push this image to your newly created AWS repository:
 docker push 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad/wordpress:latest
+
