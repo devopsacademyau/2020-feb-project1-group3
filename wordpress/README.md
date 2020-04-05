@@ -8,16 +8,16 @@ Repository name:ad/wordpress
 #### Retrieve an authentication token and authenticate your Docker client to your registry
 Use the AWS CLI:
 
-aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad/wordpress
+```aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad/wordpress```
 
 
 #### Build your Docker image using the following command. For information on building a Docker file from scratch see the instructions here . You can skip this step if your image is already built:
 
-docker build -t ad/wordpress .
+```docker build -t ad/wordpress .```
 
 #### After the build completes, tag your image so you can push the image to this repository:
-docker tag wordpress:latest 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad/wordpress:latest
+```docker tag wordpress:latest 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad/wordpress:latest```
 
 #### Run the following command to push this image to your newly created AWS repository:
-docker push 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad/wordpress:latest
+```docker push 607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/ad/wordpress:latest```
 
