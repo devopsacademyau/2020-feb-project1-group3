@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:php7.3-apache
+     volumes: 
+       - wordpress:/var/www/html:rw
+     ports:
+       - "8000:80"
+     restart: always
+     environment: # environment variable will changed when connecting aws rds
+       WORDPRESS_DB_HOST: db:3306 
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+       WORDPRESS_DB_NAME: wordpress
+volumes:
+   wordpress: {} #this need to be change when mount to aws persistent storage
