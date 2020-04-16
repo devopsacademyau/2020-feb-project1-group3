@@ -1,4 +1,8 @@
-variable "vpc-cidr" { default = "" }
+#Anderson variables:
+
+variable "projectname" {type = string}
+variable "region" {type = string}
+variable "vpccidr" {type = string}
 variable "publicsubnets" { 
     type = list(object({
         name = string
@@ -15,3 +19,7 @@ variable "privatesubnets" {
         publicip = bool
     }))
 }
+
+
+
+#Heaven variables:

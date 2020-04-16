@@ -1,4 +1,8 @@
-vpc-cidr = "10.0.0.0/16"
+#Anderson variables:
+
+projectname = "PR1-grp3"
+region = "ap-southeast-2"
+vpccidr = "10.0.0.0/16"
 publicsubnets = [
  {
     name = "public-a"
@@ -27,3 +31,7 @@ privatesubnets = [
     publicip = false
   }
 ]
+
+
+
+#Heaven variables:

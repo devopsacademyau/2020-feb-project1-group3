@@ -1,7 +1,7 @@
 resource "aws_vpc" "main" {
-    cidr_block = var.vpc-cidr
+    cidr_block = var.vpccidr
     enable_dns_hostnames = true
-    tags = { Name = "tfvpc"}
+    tags = { Name = "${var.projectname}-vpc"}
 }
 resource "aws_subnet" "public-subs" {
     vpc_id = aws_vpc.main.id
@@ -10,7 +10,7 @@ resource "aws_subnet" "public-subs" {
   availability_zone = var.publicsubnets[count.index].az
   map_public_ip_on_launch = var.publicsubnets[count.index].publicip
   tags = {
-     Name = var.publicsubnets[count.index].name
+     Name = "${var.projectname}-${var.publicsubnets[count.index].name}"
   } 
 }
 resource "aws_subnet" "private-subs" {
@@ -20,13 +20,13 @@ resource "aws_subnet" "private-subs" {
   availability_zone = var.privatesubnets[count.index].az
   map_public_ip_on_launch = var.privatesubnets[count.index].publicip
   tags = {
-     Name = var.privatesubnets[count.index].name
+     Name = "${var.projectname}-${var.privatesubnets[count.index].name}"
   } 
 }
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "devops-igw"
+    Name = "${var.projectname}-igw"
   }
 }
 resource "aws_route_table" "rtpublic" {
@@ -36,13 +36,13 @@ resource "aws_route_table" "rtpublic" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "public route"
+    Name = "${var.projectname}-rtpublic"
   }
 }
 resource "aws_route_table" "rtprivate" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "private route"
+    Name = "${var.projectname}-rtprivate"
   }
 }
 resource "aws_route_table_association" "rtpublicsubnets" {
@@ -123,7 +123,7 @@ resource "aws_network_acl" "private" {
             to_port   = 22
         }
   tags = {
-    Name = "private"
+    Name = "${var.projectname}-private"
   }
 }
 resource "aws_network_acl" "public" {
@@ -194,6 +194,6 @@ resource "aws_network_acl" "public" {
         to_port   = 22
         }
   tags = {
-    Name = "public"
+    Name = "${var.projectname}-public"
   }
 }
