@@ -1,7 +1,7 @@
 ## Aurora db 
 The rds.tf provides example code for creating a aurora db cluster and instances.
 
-###Prerequisites for creating Aurora DB
+### Prerequisites for creating Aurora DB
 #### Create a VPC and Subnets
 You can only create an Amazon Aurora DB cluster in a Virtual Private Cloud (VPC) that spans two Availability Zones, and each zone must contain at least one subnet. And the rds needs to be deployed to private subnet, so the instance won't be access externally. For this rds.tf, it is expecting vpc and subnet group from other module. VPC module will output vpc id and a subnet group which contains two private subnets.
 
