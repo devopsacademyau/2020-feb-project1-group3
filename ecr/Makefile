@@ -1,3 +1,8 @@
+ECR_REPO ?= "160372566358.dkr.ecr.ap-southeast-2.amazonaws.com/group3-wordpress"
+TAG ?= latest
+REPO_IMAGE ?= $(ECR_REPO):$(TAG)
+IMAGE_NAME ?= "hello-world"
+
 all: init plan apply aws build tag push
 
 #Terraform
@@ -6,26 +11,25 @@ init:
 	terraform init
 
 plan: init
-	terraform plan 
+	terraform plan -var-file terraform.tfvars -out=.terraform-plan
 
-apply: plan 
-	terraform apply -auto-approve
+apply:  
+	terraform apply .terraform-plan
 
 #AWS
 
-aws: apply 
-	aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 160372566358.dkr.ecr.ap-southeast-2.amazonaws.com/project_ecr
-
+aws:  
+	aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin $(ECR_REPO)
 #Docker
 
-build: aws  
-	docker build -t hello-world .
+build:   
+	docker build -t $(IMAGE_NAME) .
 
-tag: build
-	docker tag hello-world 160372566358.dkr.ecr.ap-southeast-2.amazonaws.com/project_ecr:latest
+tag: 
+	docker tag $(IMAGE_NAME) $(REPO_IMAGE) 
 
-push: tag
-	docker push 160372566358.dkr.ecr.ap-southeast-2.amazonaws.com/project_ecr:latest
+push: tag aws
+	docker push $(REPO_IMAGE)
 
 
 
