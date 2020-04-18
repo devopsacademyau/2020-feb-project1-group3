@@ -1,2 +1,4 @@
 ./example/db_data
 ./example/wordpress
+.terraform*
+terraform.tfstate*
