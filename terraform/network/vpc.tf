@@ -91,37 +91,13 @@ resource "aws_network_acl" "private" {
       to_port   = 22
     }
   egress{
-            protocol   = "tcp"
-            rule_no    = 100
-            action     = "allow"
-            cidr_block = aws_vpc.main.cidr_block
-            from_port  = 3306
-            to_port    = 3306
-        }
-  egress{
-            protocol = "tcp"
-            rule_no = 110
-            action = "allow"
-            cidr_block = aws_vpc.main.cidr_block
-            from_port = 443
-            to_port   = 443
-        }
-  egress{
-            protocol = "tcp"
-            rule_no = 120
-            action = "allow"
-            cidr_block = aws_vpc.main.cidr_block
-            from_port = 80
-            to_port   = 80
-        }
-  egress{
-            protocol = "tcp"
-            rule_no = 130
-            action = "allow"
-            cidr_block = aws_vpc.main.cidr_block
-            from_port = 22
-            to_port   = 22
-        }
+      protocol   = "tcp"
+      rule_no    = 100
+      action     = "allow"
+      cidr_block = aws_vpc.main.cidr_block
+      from_port  = 1024
+      to_port    = 65535
+    }
   tags = {
     Name = "${var.projectname}-private"
   }
@@ -162,37 +138,13 @@ resource "aws_network_acl" "public" {
       to_port   = 22
     }
     egress{
-        protocol   = "tcp"
-        rule_no    = 100
-        action     = "allow"
-        cidr_block = "0.0.0.0/0"
-        from_port  = 3306
-        to_port    = 3306
-        }
-    egress{
-        protocol = "tcp"
-        rule_no = 110
-        action = "allow"
-        cidr_block = "0.0.0.0/0"
-        from_port = 443
-        to_port   = 443
-        }
-    egress{
-        protocol = "tcp"
-        rule_no = 120
-        action = "allow"
-        cidr_block = "0.0.0.0/0"
-        from_port = 80
-        to_port   = 80
-        }
-    egress{
-        protocol = "tcp"
-        rule_no = 130
-        action = "allow"
-        cidr_block = "0.0.0.0/0"
-        from_port = 22
-        to_port   = 22
-        }
+      protocol   = "tcp"
+      rule_no    = 100
+      action     = "allow"
+      cidr_block = "0.0.0.0/0"
+      from_port  = 1024
+      to_port    = 65535
+    }
   tags = {
     Name = "${var.projectname}-public"
   }
