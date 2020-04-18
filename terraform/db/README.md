@@ -1,4 +1,4 @@
-## Prerequisites for creating Aurora DB
+##Prerequisites for creating Aurora DB
 ### Create a VPC and Subnets
 You can only create an Amazon Aurora DB cluster in a Virtual Private Cloud (VPC) that spans two Availability Zones, and each zone must contain at least one subnet. You can create an Aurora DB cluster in the default VPC for your AWS account, or you can create a user-defined VPC.
 
