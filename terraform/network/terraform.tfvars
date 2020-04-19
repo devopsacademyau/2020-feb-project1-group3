@@ -1,6 +1,6 @@
 #Anderson variables:
 
-projectname = "PR1-grp3"
+projectname = "pr1-grp3"
 region = "ap-southeast-2"
 vpccidr = "10.0.0.0/16"
 publicsubnets = [
