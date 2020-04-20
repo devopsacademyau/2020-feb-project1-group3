@@ -35,6 +35,26 @@ variable "vpc_id" {
     type = string
 }
 
+variable "wordpress_db_host_parameter" {
+    type = string
+    default = "/wordpress/WORDPRESS_DB_HOST"
+}
+
+variable "wordpress_db_user_parameter" {
+    type = string
+     default = "/wordpress/WORDPRESS_DB_USER"
+}
+
+variable "wordpress_db_password_parameter" {
+    type = string
+    default = "/wordpress/WORDPRESS_DB_PASSWORD"
+}
+
+variable "wordpress_db_name_parameter" {
+     type = string
+     default = "/wordpress/WORDPRESS_DB_NAME"
+}
+
 variable "db_user_name" {
     type = string
     default = "admin"
@@ -44,3 +64,4 @@ variable "db_password" {
     type = string
     default = "admin123"
 }
+
