@@ -18,7 +18,7 @@ resource "aws_efs_mount_target" "project_mount_target" {
 # Security Group
 
 resource "aws_security_group" "project_security_group" {
-  name        = var.sg_name
+  name        = "${var.project_name}-efs-sg"
   description = "Security Group for Elastic File System"
   vpc_id      = var.vpc_id
 
@@ -27,10 +27,10 @@ ingress {
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
+    security_groups = [var.security_group[0].id]
   }
 
   tags = {
-    Name = var.tag
+    Name = "${var.project_name}-efs-sg"
   }
 }

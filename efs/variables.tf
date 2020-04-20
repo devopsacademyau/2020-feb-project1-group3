@@ -18,16 +18,16 @@ variable "ecs_nodes_sg_id" {
   type = "string"
 }
 
-variable "sg_name" {
-  type = "string"
-}
-
 variable "vpc_id" {
   type = "string"
 }
 
 variable "vpc_cidr" {
   type = "string"
+}
+
+variable "security_group" {
+  type = list(any)
 }
 
 
