@@ -65,7 +65,7 @@ resource "aws_ssm_parameter" "db-passowrd" {
     name = var.wordpress_db_password_parameter
     description = "The wordpress password"
     type        = "SecureString"
-    value       = var.db_password
+    value       = random_password.password.result
 }
 
 resource "aws_ssm_parameter" "db-name" {
