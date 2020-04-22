@@ -46,3 +46,31 @@ resource "aws_security_group" "rds-apps" {
 output "rds_host" {
     value = aws_rds_cluster.rdsclu.endpoint
 }
+
+resource "aws_ssm_parameter" "db-host" {
+    name = var.wordpress_db_host_parameter
+    description = "The wordpress db host"
+    type        = "String"
+    value       = "${aws_rds_cluster.rdsclu.endpoint}:3306"
+}
+
+resource "aws_ssm_parameter" "db-user" {
+    name = var.wordpress_db_user_parameter
+    description = "The wordpress db user"
+    type        = "String"
+    value       = var.db_user_name
+}
+
+resource "aws_ssm_parameter" "db-passowrd" {
+    name = var.wordpress_db_password_parameter
+    description = "The wordpress password"
+    type        = "SecureString"
+    value       = random_password.password.result
+}
+
+resource "aws_ssm_parameter" "db-name" {
+    name = var.wordpress_db_name_parameter
+    description = "The wordpress db name"
+    type        = "String"
+    value       = var.db_name
+}
