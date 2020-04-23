@@ -151,25 +151,3 @@ resource "aws_network_acl" "public" {
     Name = "${var.projectname}-public"
   }
 }
-
-data "aws_subnet_ids" "private" {
-  vpc_id = var.vpc_id
-
-  tags = {
-    Tier = "Private"
-  }
-}
-
-# data "aws_subnet" "private" {
-#   for_each = data.aws_subnet_ids.private.ids
-#   id       = each.value
-# }
-
-resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "db_subnet_group"
-  subnet_ids = [for s in data.aws_subnet_ids.private.ids : s]
-
-  tags = {
-    Name = "My DB subnet group"
-  }
-}

@@ -2,12 +2,12 @@ resource "aws_rds_cluster" "rdsclu" {
     cluster_identifier      = "${var.project_name}-db-cluster"
     engine                  = "aurora-mysql"
     engine_version          = "5.7.mysql_aurora.2.07.2"
-    db_subnet_group_name    = var.db_subnet_group_name
+    db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
     vpc_security_group_ids  = [aws_security_group.rds-apps.id]
     availability_zones      = var.availability_zones
     database_name           = var.db_name
     master_username         = var.db_user_name
-    master_password         = var.db_password # the password will be repalced when security manager set up
+    master_password         = aws_ssm_parameter.db-passowrd.value # the password will be repalced when security manager set up
     backup_retention_period = 1
     deletion_protection     = false
     apply_immediately       = true
@@ -21,12 +21,20 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
     instance_class         = "db.r4.large" # this is the smallest instance can be use for the engine
     engine                 = "aurora-mysql"
     engine_version         = "5.7.mysql_aurora.2.07.2" #serverless is not supported for this version 
-    db_subnet_group_name   = var.db_subnet_group_name
+    db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
 }
 
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name       = "db_subnet_group"
+  subnet_ids = [var.private_subnet_id1, var.private_subnet_id2]
+
+  tags = {
+    Name = "My DB subnet group"
+  }
+}
 
 resource "aws_security_group" "rds-apps" {
-    name   = "${var.project_name}-sg"
+    name   = "${var.project_name}-rds-sg"
     vpc_id = var.vpc_id
 
     lifecycle {
@@ -38,15 +46,33 @@ resource "aws_security_group" "rds-apps" {
         to_port         = 3306
         protocol        = "tcp"
         cidr_blocks     = [var.vpc_cidr]
-        #security_groups = [module.ecs_apps.ecs_nodes_secgrp_id] This probably will need after setting up ecs
-        # description     = "From ECS Nodes"
+        security_groups = [var.ecs_nodes_secgrp_id] 
     }
 }
-
-output "rds_host" {
+output "endpoint" {
     value = aws_rds_cluster.rdsclu.endpoint
+    description = "Thd DNS address of the rds instance"
 }
 
+output "db_host_arn" {
+    value = aws_ssm_parameter.db-host.arn
+}
+
+output "db_user_arn" {
+    value = aws_ssm_parameter.db-user.arn
+}
+
+output "db_passowrd_arn" {
+    value = aws_ssm_parameter.db-passowrd.arn
+}
+
+output "db_name_arn" {
+    value = aws_ssm_parameter.db-name.arn
+}
+
+# output "db-user" {
+#     value = 
+# }
 resource "aws_ssm_parameter" "db-host" {
     name = var.wordpress_db_host_parameter
     description = "The wordpress db host"
@@ -74,3 +100,10 @@ resource "aws_ssm_parameter" "db-name" {
     type        = "String"
     value       = var.db_name
 }
+
+resource "random_password" "password" {
+    length = 16
+    special = true
+    override_special = "_%@"
+}
+

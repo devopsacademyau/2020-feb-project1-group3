@@ -1,5 +1,0 @@
-projectname = "pr1-grp3"
-region = "ap-southeast-2"
-az = "ap-southeast-2a"
-inst_type = "t2.micro"
-inst_key = "bastion"

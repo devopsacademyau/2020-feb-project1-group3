@@ -27,10 +27,14 @@ ingress {
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
-    security_groups = [var.security_group[0].id]
+    security_groups = [var.ecs_nodes_secgrp_id] 
   }
 
   tags = {
     Name = "${var.project_name}-efs-sg"
   }
+}
+
+output "efs_id" {
+    value = aws_efs_file_system.project_efs.id
 }

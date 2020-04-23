@@ -14,10 +14,6 @@ variable "private_subnet_id" {
   type = "string"
 }
 
-variable "ecs_nodes_sg_id" {
-  type = "string"
-}
-
 variable "vpc_id" {
   type = "string"
 }
@@ -30,4 +26,6 @@ variable "security_group" {
   type = list(any)
 }
 
-
+variable "ecs_nodes_secgrp_id" {
+  type = string
+}

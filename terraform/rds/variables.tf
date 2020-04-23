@@ -22,7 +22,15 @@ variable cluster_name {
     type = string
 }
 
-variable db_subnet_group_name {
+# variable db_subnet_group_name {
+#     type = string
+# }
+
+variable private_subnet_id1 {
+    type = string
+}
+
+variable private_subnet_id2 {
     type = string
 }
 
@@ -65,3 +73,6 @@ variable "db_password" {
     default = "changeme"
 }
 
+variable "ecs_nodes_secgrp_id" {
+  type = string
+}

@@ -1,29 +1,68 @@
-
 module "network" {
   source  = "./network"
-  public_subnets = var.public_subnets
+  projectname = var.projectname
+  publicsubnets = var.public_subnets
   region = var.region
-  private_subnets = var.private_subnets
-  vpc_cidr = var.vpc_cidr
-  availability_zones = var.availability_zones
-
+  privatesubnets = var.private_subnets
+  vpccidr = var.vpc_cidr
 }
 
 module "ecr" {
   source = "./ecr"
+  project_name = var.projectname
 }
 
 module "efs" {
   source = "./efs"
+  project_name = var.projectname
+  tag = var.tag
+  vpc_id = module.network.aws_vpc_id
+  vpc_cidr = var.vpc_cidr
+  region = var.region
+  private_subnet_id =  module.network.private_subnet_id1
+  security_group =  var.security_group  
+  ecs_nodes_secgrp_id = module.ecs.ecs_nodes_secgrp_id
 }
 
 module "ecs" {
   source = "./ecs"
+  projectname = var.projectname
+  az = var.az
+  inst_type = var.inst_type
+  inst_key = var.inst_key
+  ami_id = var.ami_id
+  asg_desired_capac = var.asg_desired_capac
+  asg_max_size = var.asg_max_size
+  asg_min_size = var.asg_min_size
+  efs_id = module.efs.efs_id
+  rds_endpoint = module.rds.endpoint
+  alb_sg = module.alb.alb_sg
+  vpc_id = module.network.aws_vpc_id
+  db_host_arn = module.rds.db_host_arn
+  db_user_arn = module.rds.db_user_arn
+  db_passowrd_arn = module.rds.db_passowrd_arn
+  db_name_arn = module.rds.db_name_arn
+  pub_sub1 = module.network.private_subnet_id1
+  pub_sub2 = module.network.private_subnet_id2
 }
 
 
 module "rds" {
   source  = "./rds"
   vpc_id = module.network.aws_vpc_id
-  db_subnet_group_name = module.vpc.subnet_group_name
+  private_subnet_id1 = module.network.private_subnet_id1
+  private_subnet_id2 = module.network.private_subnet_id2
+  #db_subnet_group_name = module.network.subnet_group_name
+  ecs_nodes_secgrp_id = module.ecs.ecs_nodes_secgrp_id
 }
+
+module "alb" {
+  source = "./alb"
+  projectname = var.projectname
+  ami = var.ami_id
+  pub_sub1 = module.network.pub_sub1
+  pub_sub2 = module.network.pub_sub2
+  vpc_id = module.network.aws_vpc_id
+  
+}
+
