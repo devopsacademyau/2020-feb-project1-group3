@@ -4,22 +4,24 @@ resource "aws_vpc" "main" {
     tags = { Name = "${var.projectname}-vpc"}
 }
 resource "aws_subnet" "public-subs" {
-    vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   count = length(var.publicsubnets)
   cidr_block = var.publicsubnets[count.index].cidr
   availability_zone = var.publicsubnets[count.index].az
   map_public_ip_on_launch = var.publicsubnets[count.index].publicip
   tags = {
+     Tier = "Public"
      Name = "${var.projectname}-${var.publicsubnets[count.index].name}"
   } 
 }
 resource "aws_subnet" "private-subs" {
-    vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   count = length(var.privatesubnets)
   cidr_block = var.privatesubnets[count.index].cidr
   availability_zone = var.privatesubnets[count.index].az
   map_public_ip_on_launch = var.privatesubnets[count.index].publicip
   tags = {
+     Tier = "Private"
      Name = "${var.projectname}-${var.privatesubnets[count.index].name}"
   } 
 }
@@ -46,12 +48,12 @@ resource "aws_route_table" "rtprivate" {
   }
 }
 resource "aws_route_table_association" "rtpublicsubnets" {
-    count = length(aws_subnet.public-subs)
+  count = length(aws_subnet.public-subs)
   subnet_id      = aws_subnet.public-subs[count.index].id
   route_table_id = aws_route_table.rtpublic.id
 }
 resource "aws_route_table_association" "rtprivatesubnets" {
-    count = length(aws_subnet.private-subs)
+  count = length(aws_subnet.private-subs)
   subnet_id      = aws_subnet.private-subs[count.index].id
   route_table_id = aws_route_table.rtprivate.id
 }
@@ -147,5 +149,27 @@ resource "aws_network_acl" "public" {
     }
   tags = {
     Name = "${var.projectname}-public"
+  }
+}
+
+data "aws_subnet_ids" "private" {
+  vpc_id = var.vpc_id
+
+  tags = {
+    Tier = "Private"
+  }
+}
+
+# data "aws_subnet" "private" {
+#   for_each = data.aws_subnet_ids.private.ids
+#   id       = each.value
+# }
+
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name       = "db_subnet_group"
+  subnet_ids = [for s in data.aws_subnet_ids.private.ids : s]
+
+  tags = {
+    Name = "My DB subnet group"
   }
 }
