@@ -1,0 +1,15 @@
+[
+    {
+      "name": "wordpress-container",
+      "image": "160372566358.dkr.ecr.ap-southeast-2.amazonaws.com/group3-wordpress:latest",
+      "cpu": 10,
+      "memory": 512,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ]
+    }
+  ]
