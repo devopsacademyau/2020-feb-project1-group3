@@ -23,8 +23,3 @@ resource "aws_lb_target_group" "lbtg" {
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
 }
-resource "aws_lb_target_group_attachment" "lbtga" {
-  target_group_arn = aws_lb_target_group.lbtg.arn
-  target_id        = aws_ecs_service.project_ecs_service.id
-  port             = 80
-}
