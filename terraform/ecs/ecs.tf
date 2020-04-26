@@ -83,7 +83,7 @@ data "template_file" "containerdata" {
 
 resource "aws_ecs_task_definition" "wp-task" {
   family                = "wp-task"
-  execution_role_arn = data.aws_iam_role.ecs_role.arn
+  execution_role_arn = aws_iam_role.ecs_role.arn
   container_definitions = data.template_file.containerdata.rendered
   volume {
     name = "wordpress"
