@@ -51,8 +51,23 @@ data "template_file" "userdata" {
   }
 }
 
-data "aws_iam_role" "ecs_role" {
-  name = "ecsTaskExecutionRole"
+resource "aws_iam_role" "ecs_role" {
+    name = "${var.projectname}-ecs_role"
+    assume_role_policy = <<-EOF
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": "sts:AssumeRole",
+                "Principal": {
+                    "Service": "ec2.amazonaws.com"
+                },
+                "Effect": "Allow",
+                "Sid": ""
+            }
+        ]
+    }
+    EOF
 }
 
 data "template_file" "containerdata" {

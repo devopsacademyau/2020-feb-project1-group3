@@ -10,5 +10,5 @@ services:
     image: hashicorp/terraform:0.12.24
     working_dir: /opt/app
     volumes:
-      - ~/.aws:/home/terraform/.aws
+      - ${HOME}/.aws:/root/.aws
       - ./:/opt/app:rw
