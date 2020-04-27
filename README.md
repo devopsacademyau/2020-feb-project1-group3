@@ -1,12 +1,11 @@
-2020-feb-project1-group3
+=======
+DevOps Academy - Project 1 - Group 3
+==================
 
-# Diagram 
+EFS - Access Point
+------------
 
-[PR1-grp3](images/PR1-grp3.png)
-
-
-# Terraform files
-
-[vpc.tf](terraform/vpc.tf)
-[variables.tf](terraform/variables.tf)
-[Terraform.tfvars](terraform/terraform.tfvars)
+Terraform code for access point to be deployed.
+[See more](http://github.com/terraform-providers/terraform-provider-aws/issues/12118) 
+- Meanwhile usig AWS cli to c reate the efs access point.
+See [Makefile](efs/Makefile) 
