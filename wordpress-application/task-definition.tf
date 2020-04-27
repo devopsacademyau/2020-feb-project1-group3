@@ -7,14 +7,14 @@ data "aws_iam_role" "ecs_role" {
 }
 
 resource "aws_iam_policy_attachment" "ecs_role_policy_attachment" {
-  name       = "idp-read-only-attachment"
-  roles      = ["${data.aws_iam_role.ecs_role.name}"]
+  name       = "${var.project_name}-iam-ecs-policy"
+  roles      = [data.aws_iam_role.ecs_role.name]
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_ecs_task_definition" "ecs_task_definition" {
   family             = "${var.project_name}-task-definition"
-  execution_role_arn = "${data.aws_iam_role.ecs_role.arn}"
+  execution_role_arn = data.aws_iam_role.ecs_role.arn
 
   container_definitions = <<TASK_DEFINITION
   [
