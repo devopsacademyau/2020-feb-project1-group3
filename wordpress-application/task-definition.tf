@@ -1,12 +1,20 @@
+data "aws_caller_identity" "account" {}
+
+data "aws_region" "current" {}
+
 data "aws_iam_role" "ecs_role" {
   name = "ecsTaskExecutionRole"
 }
-data "aws_caller_identity" "account" {}
-data "aws_region" "current" {}
+
+resource "aws_iam_policy_attachment" "ecs_role_policy_attachment" {
+  name       = "idp-read-only-attachment"
+  roles      = ["${data.aws_iam_role.ecs_role.name}"]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
 
 resource "aws_ecs_task_definition" "ecs_task_definition" {
   family             = "${var.project_name}-task-definition"
-  execution_role_arn = data.aws_iam_role.ecs_role.arn
+  execution_role_arn = "${data.aws_iam_role.ecs_role.arn}"
 
   container_definitions = <<TASK_DEFINITION
   [
