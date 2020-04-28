@@ -19,9 +19,6 @@
         }
     ],
     "secrets": [{
-        "name": "RDS_ENDPOINT",
-        "valueFrom": "${rds_endpoint}"
-    },{
         "name": "WORDPRESS_DB_HOST",
         "valueFrom": "${db_host_arn}"
     },{

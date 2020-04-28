@@ -16,3 +16,4 @@ variable "db_passowrd_arn" {type = string}
 variable "db_name_arn" {type = string}
 variable "pub_sub1" {type = string}
 variable "pub_sub2" {type = string}
+variable "target_group_arn" {type = string}

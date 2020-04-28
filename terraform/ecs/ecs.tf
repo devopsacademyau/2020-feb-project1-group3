@@ -9,11 +9,18 @@ resource "aws_security_group" "ecs-ec2-sg" {
     lifecycle {
         create_before_destroy = true
     }
-
     ingress {
         from_port       = 0
-        to_port         = 65535 
-        protocol        = "tcp" 
+        to_port         = 0 
+        protocol        = "-1" 
+        cidr_blocks     = ["0.0.0.0/0"]
+        security_groups = [var.alb_sg] 
+        description     = "From ALB"
+    }
+    egress {
+        from_port       = 0
+        to_port         = 0 
+        protocol        = "-1" 
         cidr_blocks     = ["0.0.0.0/0"]
         security_groups = [var.alb_sg] 
         description     = "From ALB"
@@ -70,6 +77,16 @@ resource "aws_iam_role" "ecs_role" {
     EOF
 }
 
+resource "aws_iam_role_policy_attachment" "ecs_role_policy_attachment" {
+  role      = aws_iam_role.ecs_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_role_policy_attachment_ssm" {
+  role     = aws_iam_role.ecs_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
+}
+
 data "template_file" "containerdata" {
   template = file("${path.module}/cd.json")
   vars = {
@@ -96,6 +113,11 @@ resource "aws_ecs_service" "wordpress-ecs-service" {
   cluster = aws_ecs_cluster.ecscluster.id
   task_definition = aws_ecs_task_definition.wp-task.family
   desired_count = 1
+  load_balancer {
+      target_group_arn = var.target_group_arn
+      container_name   = "wordpress"
+      container_port   = 80
+  }
 }
 
 output "ecs_nodes_secgrp_id" {

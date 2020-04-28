@@ -44,6 +44,7 @@ module "ecs" {
   db_name_arn = module.rds.db_name_arn
   pub_sub1 = module.network.private_subnet_id1
   pub_sub2 = module.network.private_subnet_id2
+  target_group_arn = module.alb.target_group_arn
 }
 
 

@@ -43,6 +43,10 @@ resource "aws_route_table" "rtpublic" {
 }
 resource "aws_route_table" "rtprivate" {
   vpc_id = aws_vpc.main.id
+   route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = aws_nat_gateway.gw.id
+    }
   tags = {
     Name = "${var.projectname}-rtprivate"
   }
@@ -61,44 +65,28 @@ resource "aws_network_acl" "private" {
   vpc_id = aws_vpc.main.id
   subnet_ids = aws_subnet.private-subs[*].id
   ingress {
-      protocol   = "tcp"
+      protocol   = -1
       rule_no    = 100
       action     = "allow"
-      cidr_block = aws_vpc.main.cidr_block
-      from_port  = 3306
-      to_port    = 3306
+      cidr_block = "0.0.0.0/0"
+      from_port  = 0
+      to_port    = 0
     }
   ingress {
       protocol = "tcp"
       rule_no = 110
       action = "allow"
-      cidr_block = aws_vpc.main.cidr_block
-      from_port = 443
-      to_port   = 443
-    }
-   ingress{
-      protocol = "tcp"
-      rule_no = 120
-      action = "allow"
-      cidr_block = aws_vpc.main.cidr_block
-      from_port = 80
-      to_port   = 80
-    }
-   ingress{
-      protocol = "tcp"
-      rule_no = 130
-      action = "allow"
-      cidr_block = aws_vpc.main.cidr_block
-      from_port = 22
-      to_port   = 22
+      cidr_block = "0.0.0.0/0"
+      from_port = 1024
+      to_port   = 65535
     }
   egress{
-      protocol   = "tcp"
+      protocol   = -1
       rule_no    = 100
       action     = "allow"
-      cidr_block = aws_vpc.main.cidr_block
-      from_port  = 1024
-      to_port    = 65535
+      cidr_block = "0.0.0.0/0"
+      from_port  = 0
+      to_port    = 0
     }
   tags = {
     Name = "${var.projectname}-private"
@@ -107,22 +95,14 @@ resource "aws_network_acl" "private" {
 resource "aws_network_acl" "public" {
   vpc_id = aws_vpc.main.id
   subnet_ids = aws_subnet.public-subs[*].id
-  ingress {
-      protocol   = "tcp"
-      rule_no    = 100
-      action     = "allow"
-      cidr_block = "0.0.0.0/0"
-      from_port  = 3306
-      to_port    = 3306
-    }
-  ingress {
-      protocol = "tcp"
-      rule_no = 110
-      action = "allow"
-      cidr_block = "0.0.0.0/0"
-      from_port = 443
-      to_port   = 443
-    }
+  # ingress {
+  #     protocol = "tcp"
+  #     rule_no = 110
+  #     action = "allow"
+  #     cidr_block = "0.0.0.0/0"
+  #     from_port = 443
+  #     to_port   = 443
+  #   }
    ingress{
       protocol = "tcp"
       rule_no = 120
@@ -131,23 +111,41 @@ resource "aws_network_acl" "public" {
       from_port = 80
       to_port   = 80
     }
-   ingress{
+  #  ingress{
+  #     protocol = "tcp"
+  #     rule_no = 130
+  #     action = "allow"
+  #     cidr_block = "0.0.0.0/0"
+  #     from_port = 22
+  #     to_port   = 22
+  #   }
+
+  ingress {
       protocol = "tcp"
-      rule_no = 130
+      rule_no = 110
       action = "allow"
       cidr_block = "0.0.0.0/0"
-      from_port = 22
-      to_port   = 22
+      from_port = 1024
+      to_port   = 65535
     }
-    egress{
-      protocol   = "tcp"
+  egress{
+      protocol   = -1
       rule_no    = 100
       action     = "allow"
       cidr_block = "0.0.0.0/0"
-      from_port  = 1024
-      to_port    = 65535
-    }
+      from_port  = 0
+      to_port    = 0
+  }
   tags = {
     Name = "${var.projectname}-public"
   }
+}
+
+resource "aws_nat_gateway" "gw" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public-subs[0].id
+}
+
+resource "aws_eip" "nat" {
+  vpc      = true
 }
