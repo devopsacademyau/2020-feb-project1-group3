@@ -22,15 +22,25 @@ resource "aws_security_group" "project_security_group" {
   description = "Security Group for Elastic File System"
   vpc_id      = var.vpc_id
 
-ingress {
-    description = "ECS Access"
-    from_port   = 2049
-    to_port     = 2049
-    protocol    = "tcp"
-    security_groups = [var.security_group[0].id]
+  ingress {
+      description = "ECS Access"
+      from_port   = 2049
+      to_port     = 2049
+      protocol    = "tcp"
+      security_groups = [var.ecs_nodes_secgrp_id] 
+    }
+  egress {
+      description = "out"
+      from_port = 0
+      to_port = 0
+      protocol = -1
+      security_groups = [var.ecs_nodes_secgrp_id]
   }
+    tags = {
+      Name = "${var.project_name}-efs-sg"
+    }
+}
 
-  tags = {
-    Name = "${var.project_name}-efs-sg"
-  }
+output "efs_id" {
+    value = aws_efs_file_system.project_efs.id
 }

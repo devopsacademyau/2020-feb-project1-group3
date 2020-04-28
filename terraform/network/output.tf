@@ -28,3 +28,19 @@ output "aws_network_acl_private_id" {
 output "aws_network_acl_public_id" {
     value = aws_network_acl.public.id
 }
+
+output "private_subnet_id1" {
+    value = aws_subnet.private-subs[0].id
+}
+
+output "private_subnet_id2" {
+    value = aws_subnet.private-subs[1].id
+}
+
+output "pub_sub1" {
+    value = aws_subnet.public-subs[0].id
+}
+
+output "pub_sub2" {
+    value = aws_subnet.public-subs[1].id
+}
