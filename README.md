@@ -45,8 +45,10 @@ Cluster EC2 | ASG (Auto Scaling Group | Task Description | Service
 - [variables.tf](terraform/efs/variables.tf)
 
 Terraform code for access point to be deployed. See more details [here](http://github.com/terraform-providers/terraform-provider-aws/issues/12118).
-Meanwhile usig AWS cli to create the efs access point. [Makefile](efs/Makefile) created to run the AWS cli script.
-
+Meanwhile usig AWS cli to create the efs access point. Add the following script to the [Makefile](Makefile) or run it in the terminal: 
+`aws efs create-access-point --file-system-id $(file-system-id) --client-token $(client-token) --root-directory Path=$(path) --tags Key="name",Value=$(name)`
+  
+  
 ### Network
 VPC | Subnets | Gateways | ACLS | Route Tables 
 - [vpc.tf](terraform/network/vpc.tf)
