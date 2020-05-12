@@ -55,6 +55,7 @@ module "rds" {
   private_subnet_id2 = module.network.private_subnet_id2
   #db_subnet_group_name = module.network.subnet_group_name
   ecs_nodes_secgrp_id = module.ecs.ecs_nodes_secgrp_id
+  availability_zones = var.availability_zones
 }
 
 module "alb" {

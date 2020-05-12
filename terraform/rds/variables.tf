@@ -12,19 +12,15 @@ variable vpc_cidr {
     default = "10.0.0.0/16"
 }
 
-
 variable db_sg_name {
     default = "devopsacademy-project-db-sg"
     type = string
 }
+
 variable cluster_name {
     default = "devopsacademy-project-cluster"
     type = string
 }
-
-# variable db_subnet_group_name {
-#     type = string
-# }
 
 variable private_subnet_id1 {
     type = string
@@ -50,7 +46,7 @@ variable "wordpress_db_host_parameter" {
 
 variable "wordpress_db_user_parameter" {
     type = string
-     default = "/wordpress/WORDPRESS_DB_USER"
+    default = "/wordpress/WORDPRESS_DB_USER"
 }
 
 variable "wordpress_db_password_parameter" {
@@ -59,8 +55,8 @@ variable "wordpress_db_password_parameter" {
 }
 
 variable "wordpress_db_name_parameter" {
-     type = string
-     default = "/wordpress/WORDPRESS_DB_NAME"
+    type = string
+    default = "/wordpress/WORDPRESS_DB_NAME"
 }
 
 variable "db_user_name" {
@@ -74,5 +70,9 @@ variable "db_password" {
 }
 
 variable "ecs_nodes_secgrp_id" {
-  type = string
+    type = string
+}
+
+variable "kms_key_id" {
+    type = string
 }

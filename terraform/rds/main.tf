@@ -2,7 +2,7 @@ resource "aws_rds_cluster" "rdsclu" {
     cluster_identifier      = "${var.project_name}-db-cluster"
     engine                  = "aurora-mysql"
     engine_version          = "5.7.mysql_aurora.2.07.2"
-    db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
+    db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name #must match subnet group in the instance
     vpc_security_group_ids  = [aws_security_group.rds-apps.id]
     database_name           = var.db_name
     master_username         = var.db_user_name
@@ -11,6 +11,9 @@ resource "aws_rds_cluster" "rdsclu" {
     deletion_protection     = false
     apply_immediately       = true
     skip_final_snapshot     = true
+    storage_encrypted       = true
+    kms_key_id              = var.kms_key_id
+
 }
 
 resource "aws_rds_cluster_instance" "cluster_instances" {
@@ -24,12 +27,12 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "db_subnet_group"
-  subnet_ids = [var.private_subnet_id1, var.private_subnet_id2]
+    name       = "db_subnet_group"
+    subnet_ids = [var.private_subnet_id1, var.private_subnet_id2]
 
-  tags = {
+    tags = {
     Name = "My DB subnet group"
-  }
+    }
 }
 
 resource "aws_security_group" "rds-apps" {
@@ -56,30 +59,7 @@ resource "aws_security_group" "rds-apps" {
         security_groups = [var.ecs_nodes_secgrp_id] 
     }
 }
-output "endpoint" {
-    value = aws_rds_cluster.rdsclu.endpoint
-    description = "Thd DNS address of the rds instance"
-}
 
-output "db_host_arn" {
-    value = aws_ssm_parameter.db-host.arn
-}
-
-output "db_user_arn" {
-    value = aws_ssm_parameter.db-user.arn
-}
-
-output "db_passowrd_arn" {
-    value = aws_ssm_parameter.db-passowrd.arn
-}
-
-output "db_name_arn" {
-    value = aws_ssm_parameter.db-name.arn
-}
-
-# output "db-user" {
-#     value = 
-# }
 resource "aws_ssm_parameter" "db-host" {
     name = var.wordpress_db_host_parameter
     description = "The wordpress db host"
@@ -111,6 +91,6 @@ resource "aws_ssm_parameter" "db-name" {
 resource "random_password" "password" {
     length = 16
     special = true
-    # override_special = "_%@"
+    override_special = "_%@"
 }
 
