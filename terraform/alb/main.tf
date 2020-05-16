@@ -6,7 +6,7 @@ resource "aws_lb" "lb" {
     subnets            = [var.pub_sub1, var.pub_sub2]
     tags = {
         Name = "${var.projectname}-lb"
-  }
+    }
 }
 
 
@@ -34,26 +34,19 @@ resource "aws_security_group" "alb-sg" {
 }
 
 resource "aws_lb_listener" "lblistener" {
-  load_balancer_arn = aws_lb.lb.arn
-  port              = "80"
-  protocol          = "HTTP"
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.lbtg.arn
-  }
+    load_balancer_arn = aws_lb.lb.arn
+    port              = "80"
+    protocol          = "HTTP"
+    default_action {
+        type             = "forward"
+        target_group_arn = aws_lb_target_group.lbtg.arn
+    }
 }
 resource "aws_lb_target_group" "lbtg" {
-  name     = "${var.projectname}-lb-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-}
-
-output "alb_sg" {
-    value = aws_security_group.alb-sg.id
+    name     = "${var.projectname}-lb-tg"
+    port     = 80
+    protocol = "HTTP"
+    vpc_id   = var.vpc_id
 }
 
 
-output "target_group_arn" {
-    value = aws_lb_target_group.lbtg.arn
-}

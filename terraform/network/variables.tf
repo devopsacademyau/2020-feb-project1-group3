@@ -1,8 +1,16 @@
-#Anderson variables:
+variable "projectname" {
+    default = "devopsacademy-project"
+    type = string
+}
 
-variable "projectname" {type = string}
-variable "region" {type = string}
-variable "vpccidr" {type = string}
+variable "region" {
+    default = "ap-southeast-2"
+    type = string
+}
+variable "vpccidr" {
+    default = "10.0.0.0/16"
+    type = string
+}
 variable "publicsubnets" { 
     type = list(object({
         name = string
@@ -19,7 +27,3 @@ variable "privatesubnets" {
         publicip = bool
     }))
 }
-
-
-
-#Heaven variables:

@@ -9,7 +9,7 @@ module "network" {
 
 module "ecr" {
   source = "./ecr"
-  project_name = var.projectname
+  projectname = var.projectname
 }
 
 module "efs" {
