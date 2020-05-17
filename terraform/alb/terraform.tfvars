@@ -1,1 +1,0 @@
-projectname = "pr1-grp3"

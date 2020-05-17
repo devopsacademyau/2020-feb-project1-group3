@@ -12,8 +12,6 @@ resource "aws_rds_cluster" "rdsclu" {
     apply_immediately       = true
     skip_final_snapshot     = true
     storage_encrypted       = true
-    kms_key_id              = var.kms_key_id
-
 }
 
 resource "aws_rds_cluster_instance" "cluster_instances" {

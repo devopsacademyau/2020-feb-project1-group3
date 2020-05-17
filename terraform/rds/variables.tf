@@ -72,7 +72,3 @@ variable "db_password" {
 variable "ecs_nodes_secgrp_id" {
     type = string
 }
-
-variable "kms_key_id" {
-    type = string
-}
