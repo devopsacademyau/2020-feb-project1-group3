@@ -45,7 +45,8 @@ resource "aws_route_table" "rtprivate" {
     vpc_id = aws_vpc.main.id
     route {
             cidr_block = "0.0.0.0/0"
-            gateway_id = aws_nat_gateway.gw.id
+            # gateway_id = aws_nat_gateway.gw.id
+            nat_gateway_id = aws_nat_gateway.gw.id
         }
     tags = {
         Name = "${var.projectname}-rtprivate"
@@ -77,7 +78,7 @@ resource "aws_network_acl" "private" {
         rule_no = 110
         action = "allow"
         cidr_block = "0.0.0.0/0"
-        from_port = 1024
+        from_port = 0
         to_port   = 65535
         }
     egress{
@@ -125,7 +126,7 @@ resource "aws_network_acl" "public" {
         rule_no = 110
         action = "allow"
         cidr_block = "0.0.0.0/0"
-        from_port = 1024
+        from_port = 0
         to_port   = 65535
         }
     egress{

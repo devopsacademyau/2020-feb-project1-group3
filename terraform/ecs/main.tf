@@ -95,6 +95,7 @@ data "template_file" "containerdata" {
     db_passowrd_arn = var.db_passowrd_arn
     db_name_arn = var.db_name_arn
     rds_endpoint = var.rds_endpoint
+    containerimage = var.containerimage
   }
 }
 

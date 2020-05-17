@@ -9,8 +9,9 @@ resource "aws_efs_file_system" "project_efs" {
 # EFS Mount Target
 
 resource "aws_efs_mount_target" "project_mount_target" {
+    count = length(var.private_subnet_id)
     file_system_id = aws_efs_file_system.project_efs.id
-    subnet_id      = var.private_subnet_id
+    subnet_id      = element(var.private_subnet_id, count.index)
     security_groups = [aws_security_group.project_security_group.id]
 }
 

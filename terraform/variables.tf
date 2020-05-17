@@ -29,9 +29,9 @@ variable "private_subnets" {
     }))
 }
 
-variable "tag" {
-    type = "string"
-}
+# variable "tag" {
+#     type = string
+# }
 
 variable "az" {type = list}
 variable "inst_type" {type = string}
@@ -43,12 +43,12 @@ variable "asg_min_size"  {type=string}
 
 
 
-# variable "private_subnet_id" {
-#   type = "string"
-# }
-
+variable "private_subnet_id" {
+  type = any
+  default = ""
+}
 variable "ecs_nodes_sg_id" {
-   type = "string"
+   type = string
 }
 
 # variable "vpc_id" {
@@ -62,3 +62,4 @@ variable "ecs_nodes_sg_id" {
 variable "security_group" {
   type = list(any)
 }
+variable containerimage {type=string}

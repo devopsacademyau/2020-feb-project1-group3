@@ -1,7 +1,7 @@
 resource "aws_rds_cluster" "rdsclu" {
     cluster_identifier      = "${var.project_name}-db-cluster"
     engine                  = "aurora-mysql"
-    engine_version          = "5.7.mysql_aurora.2.07.2"
+    engine_version          = "5.7.mysql_aurora.2.07.2"   #5.6.mysql_aurora.1.22.2
     db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name #must match subnet group in the instance
     vpc_security_group_ids  = [aws_security_group.rds-apps.id]
     database_name           = var.db_name
@@ -18,7 +18,7 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
     count                  = 1
     identifier             = "${var.project_name}-rds-instance"
     cluster_identifier     = aws_rds_cluster.rdsclu.id
-    instance_class         = "db.r4.large" # this is the smallest instance can be use for the engine
+    instance_class         = "db.t2.small" # this is the smallest instance can be use for the engine
     engine                 = "aurora-mysql"
     engine_version         = "5.7.mysql_aurora.2.07.2" #serverless is not supported for this version 
     db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
@@ -89,6 +89,6 @@ resource "aws_ssm_parameter" "db-name" {
 resource "random_password" "password" {
     length = 16
     special = true
-    override_special = "_%@"
+    override_special = "/@"
 }
 
