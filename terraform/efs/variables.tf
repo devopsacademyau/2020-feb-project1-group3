@@ -1,25 +1,26 @@
 variable "project_name" {
-  type = "string"
+  type = string
 }
 
-variable "tag" {
-  type = "string"
-}
+# variable "tag" {
+#   type = string
+# }
 
 variable "region" {
-  type = "string"
+  type = string
 }
 
 variable "private_subnet_id" {
-  type = "string"
+  type = any
+  default = ""
 }
 
 variable "vpc_id" {
-  type = "string"
+  type = string
 }
 
 variable "vpc_cidr" {
-  type = "string"
+  type = string
 }
 
 variable "security_group" {

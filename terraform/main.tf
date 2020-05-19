@@ -15,11 +15,11 @@ module "ecr" {
 module "efs" {
   source = "./efs"
   project_name = var.projectname
-  tag = var.tag
+  # tag = var.tag
   vpc_id = module.network.aws_vpc_id
   vpc_cidr = var.vpc_cidr
   region = var.region
-  private_subnet_id =  module.network.private_subnet_id1
+  private_subnet_id = module.network.aws_subnet_private-subs_id
   security_group =  var.security_group  
   ecs_nodes_secgrp_id = module.ecs.ecs_nodes_secgrp_id
 }
@@ -45,6 +45,7 @@ module "ecs" {
   pub_sub1 = module.network.private_subnet_id1
   pub_sub2 = module.network.private_subnet_id2
   target_group_arn = module.alb.target_group_arn
+  containerimage = var.containerimage
 }
 
 

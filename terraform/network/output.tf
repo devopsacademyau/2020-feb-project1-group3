@@ -7,7 +7,7 @@ output "aws_route_table_rtprivate_id" {
 output "aws_route_table_rtpublic_id" {
     value = aws_route_table.rtpublic.id
 }
-output "aws_subnet_private-subs" {
+output "aws_subnet_private-subs_id" {
     value = aws_subnet.private-subs[*].id
 }
 output "aws_route_table_association_rtprivatesubnets_id" {

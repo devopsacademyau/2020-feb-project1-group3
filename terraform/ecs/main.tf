@@ -62,12 +62,12 @@ resource "aws_iam_role" "ecs_role" {
     name = "${var.projectname}-ecs_role"
     assume_role_policy = <<-EOF
     {
-        "Version": "2012-10-17",
+        "Version": "2008-10-17",
         "Statement": [
             {
                 "Action": "sts:AssumeRole",
                 "Principal": {
-                    "Service": "ec2.amazonaws.com"
+                    "Service": "ecs-tasks.amazonaws.com"
                 },
                 "Effect": "Allow",
                 "Sid": ""
@@ -95,6 +95,7 @@ data "template_file" "containerdata" {
     db_passowrd_arn = var.db_passowrd_arn
     db_name_arn = var.db_name_arn
     rds_endpoint = var.rds_endpoint
+    containerimage = var.containerimage
   }
 }
 
@@ -112,7 +113,7 @@ resource "aws_ecs_service" "wordpress-ecs-service" {
   name = "wordpress-ecs-service"
   cluster = aws_ecs_cluster.ecscluster.id
   task_definition = aws_ecs_task_definition.wp-task.family
-  desired_count = 1
+  desired_count = 2
   load_balancer {
       target_group_arn = var.target_group_arn
       container_name   = "wordpress"
