@@ -46,6 +46,7 @@ module "ecs" {
   pub_sub2 = module.network.private_subnet_id2
   target_group_arn = module.alb.target_group_arn
   containerimage = var.containerimage
+  retention_in_days = var.retention_in_days
 }
 
 

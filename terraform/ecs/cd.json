@@ -8,12 +8,12 @@
     "mountPoints": [
         {
             "sourceVolume": "wordpress",
-            "containerPath": "/var/www/html"
+            "containerPath": "/var/www/html",
+            "readOnly"     : false
         }
     ],
     "portMappings": [
         {
-        "hostPort": 80,
         "protocol": "tcp",
         "containerPort": 80
         }
