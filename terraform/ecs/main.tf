@@ -42,7 +42,6 @@ resource "aws_launch_configuration" "lc" {
 }
 
 resource "aws_autoscaling_group" "asg" {
-  availability_zones = var.az
   desired_capacity   = var.asg_desired_capac
   max_size           = var.asg_max_size
   min_size           = var.asg_min_size
@@ -148,4 +147,9 @@ resource "aws_iam_role_policy_attachment" "ecs_node_role_policy" {
 resource "aws_iam_instance_profile" "instprof" {
     name    = "${var.projectname}-inst-prof"
     role    = aws_iam_role.ecsrun.name
+}
+
+resource "aws_cloudwatch_log_group" "log" {
+  name              = "/ecs/${var.projectname}"
+  retention_in_days = var.retention_in_days
 }
