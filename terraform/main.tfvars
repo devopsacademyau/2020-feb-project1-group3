@@ -50,5 +50,5 @@ ami_id = "ami-064db566f79006111"
 asg_desired_capac = "2"
 asg_max_size = "2"
 asg_min_size = "1"
-containerimage = "607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/wordpress:e2ddee6"
+containerimage = "607961847144.dkr.ecr.ap-southeast-2.amazonaws.com/pr1-grp3-ecr:8dd5fd4"
 retention_in_days = 30

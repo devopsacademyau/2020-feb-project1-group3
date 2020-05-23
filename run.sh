@@ -4,8 +4,8 @@ set -ueo pipefail
 # Target aws environment variables
 FUNC="${1:-}"
 AWS_REGION="${AWS_REGION:-ap-southeast-2}"
-AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID:-607961847144}"
-ECR_REPO="${ECR_REPO:-wordpress}"
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+ECR_REPO="${ECR_REPO:-pr1-grp3-ecr}"
 
 # Docker compose calls
 TERRAFORM="docker-compose run --rm terraform"
