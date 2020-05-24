@@ -15,9 +15,9 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
     
-    - name: Lint Terraform
-      uses: actionshub/terraform-lint@master
-
+    - name: Terraform Format
+      run: terraform fmt -check
+      
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
