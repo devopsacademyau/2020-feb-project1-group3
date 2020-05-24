@@ -24,19 +24,21 @@ Diagram of the proposed AWS Architecture:
 The ecr repository need to be created in you aws account before you push the image to the ecr.
 Run below command to create a ecr repository if you don't have the repository created.
 ```
-make  deploy_ecr
+make prep_ecr
 ```
 ### How to Run
 Run below to push wordpress image to ECR from the Dockerfile. You need to configure
 the variable with your aws account id, region and your ecr repo name.
 ```
-make prepare
+make push_image
 ```
 Deploy the whole stack that running ec2 instances from the image that you pushed to the ecr
 ```
-make deploy_aws
+make apply_aws
 ```
-
+Destroy the whole stack
+```
+make destroy_aws
 
 
 

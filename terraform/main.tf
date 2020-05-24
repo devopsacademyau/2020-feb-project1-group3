@@ -7,10 +7,11 @@ module "network" {
   vpccidr = var.vpc_cidr
 }
 
-module "ecr" {
-  source = "./ecr"
-  projectname = var.projectname
-}
+# module "ecr" {
+#   source = "./ecr"
+#   projectname = var.projectname
+#   # account_id = var.account_id
+# }
 
 module "efs" {
   source = "./efs"

@@ -1,4 +1,4 @@
-prepare:
+push_image:
 	./run.sh push-image
 
 apply_aws:
@@ -7,8 +7,8 @@ apply_aws:
 destroy_aws:
 	./run.sh destroy-aws 	
 
-deploy_ecr:
-	./run.sh deploy-ecr
+prep_ecr:
+	./run.sh prep-ecr
 
 # .PHONY: deploy
 # deploy: build

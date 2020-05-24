@@ -23,8 +23,8 @@ push-image() {
 apply-aws() {
     docker-compose pull terraform
     ${TERRAFORM} init ./terraform
-    ${TERRAFORM} plan -var-file ./terraform/main.tfvars -out=./terraform/terraform-plan ./terraform
-    ${TERRAFORM} apply ./terraform/terraform-plan
+    ${TERRAFORM} plan -var-file ./terraform/main.tfvars ./terraform #-out=./terraform/terraform-plan ./terraform
+    # ${TERRAFORM} apply ./terraform/terraform-plan
 }
 
 destroy-aws() {
@@ -32,25 +32,25 @@ destroy-aws() {
     ${TERRAFORM} destroy  -var-file ./terraform/main.tfvars ./terraform
 }
 
-deploy-ecr() {
+prep-ecr() {
     docker-compose pull terraform
-    ${TERRAFORM} init ./terraform/
-    ${TERRAFORM} plan -var-file ./terraform/main.tfvars  -out=./terraform/ecr.plan ./terraform/ecr 
-    ${TERRAFORM} apply ./terraform/ecr.plan  
+    ${TERRAFORM} init ./terraform/prep_ecr
+    ${TERRAFORM} plan -var-file ./terraform/prep_ecr/main.tfvars -out=./terraform/prep_ecr/ecr.plan ./terraform/prep_ecr 
+    ${TERRAFORM} apply ./terraform/prep_ecr/ecr.plan
 }
 
 case "${FUNC:-}" in
 push-image)
     push-image
     ;;
+prep-ecr)
+    prep-ecr
+    ;;
 apply-aws)
     apply-aws
     ;;
 destroy-aws)
     destroy-aws
-    ;;    
-deploy-ecr)
-    deploy-ecr
-    ;;         
+    ;;        
 esac
 
