@@ -54,6 +54,5 @@ variable "security_group" {
   type = list(any)
 }
 variable containerimage {type=string}
-
 variable "retention_in_days" {type=number}
 variable account_id {type=any}

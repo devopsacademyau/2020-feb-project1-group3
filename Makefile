@@ -1,6 +1,9 @@
 push_image:
 	./run.sh push-image
 
+refresh_image:
+	./run.sh refresh-image
+
 apply_aws:
 	./run.sh apply-aws	
 
