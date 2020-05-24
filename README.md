@@ -29,7 +29,7 @@ make prep_ecr
 
 You also need to have a domain registered under AWS Route53 and configure it in var.domainname
 You need to configure the variable var.certificate_arn with your aws certificate arn to enable HTTPS.
-
+Here you'll find the file with variables to update [main.tfvars](./terraform/main.tfvars)
 
 ### How to Run
 Run below to push wordpress image to ECR from the Dockerfile. 
