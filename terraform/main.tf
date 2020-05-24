@@ -6,25 +6,20 @@ module "network" {
   privatesubnets = var.private_subnets
   vpccidr        = var.vpc_cidr
 }
-
-# module "ecr" {
-#   source = "./ecr"
-#   projectname = var.projectname
-#   # account_id = var.account_id
-# }
-
+module "ecr" {
+  source = "./ecr"
+  projectname = var.projectname
+}
 module "efs" {
   source       = "./efs"
   project_name = var.projectname
-  # tag = var.tag
-  vpc_id              = module.network.aws_vpc_id
-  vpc_cidr            = var.vpc_cidr
-  region              = var.region
-  private_subnet_id   = module.network.aws_subnet_private-subs_id
-  security_group      = var.security_group
+  vpc_id = module.network.aws_vpc_id
+  vpc_cidr = var.vpc_cidr
+  region = var.region
+  private_subnet_id = module.network.aws_subnet_private-subs_id
+  security_group =  var.security_group  
   ecs_nodes_secgrp_id = module.ecs.ecs_nodes_secgrp_id
 }
-
 module "ecs" {
   source            = "./ecs"
   projectname       = var.projectname
@@ -49,25 +44,22 @@ module "ecs" {
   containerimage    = var.containerimage
   retention_in_days = var.retention_in_days
 }
-
-
 module "rds" {
   source             = "./rds"
   vpc_id             = module.network.aws_vpc_id
   private_subnet_id1 = module.network.private_subnet_id1
   private_subnet_id2 = module.network.private_subnet_id2
-  #db_subnet_group_name = module.network.subnet_group_name
   ecs_nodes_secgrp_id = module.ecs.ecs_nodes_secgrp_id
   availability_zones  = var.availability_zones
 }
-
 module "alb" {
   source      = "./alb"
   projectname = var.projectname
-  ami         = var.ami_id
-  pub_sub1    = module.network.pub_sub1
-  pub_sub2    = module.network.pub_sub2
-  vpc_id      = module.network.aws_vpc_id
-
+  ami = var.ami_id
+  pub_sub1 = module.network.pub_sub1
+  pub_sub2 = module.network.pub_sub2
+  vpc_id = module.network.aws_vpc_id
+  certificate_arn = var.certificate_arn
+  domainname = var.domainname
 }
 

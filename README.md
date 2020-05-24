@@ -26,19 +26,23 @@ Run below command to create a ecr repository if you don't have the repository cr
 ```
 make prep_ecr
 ```
+
+You also need to have a domain registered under AWS Route53 and configure it in var.domainname
+You need to configure the variable var.certificate_arn with your aws certificate arn to enable HTTPS.
+Here you'll find the file with variables to update [main.tfvars](./terraform/main.tfvars)
+
 ### How to Run
-Run below to push wordpress image to ECR from the Dockerfile. You need to configure
-the variable with your aws account id, region and your ecr repo name.
+Run below to push wordpress image to ECR from the Dockerfile. 
 ```
 make push_image
 ```
-Deploy the whole stack that running ec2 instances from the image that you pushed to the ecr
+
+Run below to deploy the whole stack that will run ec2 instances from the image that you pushed to the ecr
 ```
 make apply_aws
 ```
-Destroy the whole stack
+
+Destroy everything! Also de DB, be careful!
 ```
 make destroy_aws
-
-
-
+```

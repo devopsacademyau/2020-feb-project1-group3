@@ -12,7 +12,12 @@ containerimage="${ecr_registry}"/"${ECR_REPO}":"${sha}"
 
 # Docker compose calls
 TERRAFORM="docker-compose run --rm -e TF_VAR_containerimage="${containerimage}"  terraform"
-
+prep-ecr() {
+    docker-compose pull terraform
+    ${TERRAFORM} init ./terraform/prep_ecr
+    ${TERRAFORM} plan -var-file ./terraform/prep_ecr/main.tfvars -out=./terraform/prep_ecr/ecr.plan ./terraform/prep_ecr 
+    ${TERRAFORM} apply ./terraform/prep_ecr/ecr.plan
+}
 push-image() {
     aws ecr get-login-password \
     --region "${AWS_REGION}" | docker login \
@@ -20,7 +25,6 @@ push-image() {
     docker build -t "${ecr_registry}"/"${ECR_REPO}":${sha} .
     docker push "${ecr_registry}"/"${ECR_REPO}":${sha}
 }
-
 refresh-image() {
     aws ecr get-login-password \
     --region "${AWS_REGION}" | docker login \
@@ -35,28 +39,19 @@ apply-aws() {
     ${TERRAFORM} plan -var-file ./terraform/main.tfvars -out=./terraform/terraform-plan ./terraform
     ${TERRAFORM} apply ./terraform/terraform-plan
 }
-
 destroy-aws() {
     docker-compose pull terraform
     ${TERRAFORM} destroy  -var-file ./terraform/main.tfvars ./terraform
 }
-
-prep-ecr() {
-    docker-compose pull terraform
-    ${TERRAFORM} init ./terraform/prep_ecr
-    ${TERRAFORM} plan -var-file ./terraform/prep_ecr/main.tfvars -out=./terraform/prep_ecr/ecr.plan ./terraform/prep_ecr 
-    ${TERRAFORM} apply ./terraform/prep_ecr/ecr.plan
-}
-
 case "${FUNC:-}" in
+prep-ecr)
+    prep-ecr
+    ;;
 push-image)
     push-image
     ;;
 refresh-image)
     refresh-image
-    ;;
-prep-ecr)
-    prep-ecr
     ;;
 apply-aws)
     apply-aws

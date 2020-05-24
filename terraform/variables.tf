@@ -28,21 +28,13 @@ variable "private_subnets" {
     publicip = bool
   }))
 }
-
-# variable "tag" {
-#     type = string
-# }
-
-variable "az" { type = list }
-variable "inst_type" { type = string }
-variable "inst_key" { type = string }
-variable "ami_id" { type = string }
-variable "asg_desired_capac" { type = string }
-variable "asg_max_size" { type = string }
-variable "asg_min_size" { type = string }
-
-
-
+variable "az" {type = list}
+variable "inst_type" {type = string}
+variable "inst_key" {type = string}
+variable "ami_id" {type=string}
+variable "asg_desired_capac"  {type=string}
+variable "asg_max_size"  {type=string}
+variable "asg_min_size"  {type=string}
 variable "private_subnet_id" {
   type    = any
   default = ""
@@ -53,6 +45,8 @@ variable "ecs_nodes_sg_id" {
 variable "security_group" {
   type = list(any)
 }
-variable containerimage { type = string }
-variable "retention_in_days" { type = number }
-variable account_id { type = any }
+variable containerimage {type=string}
+variable "retention_in_days" {type=number}
+variable account_id {type=any}
+variable certificate_arn {type=string}
+variable domainname {type=string}
