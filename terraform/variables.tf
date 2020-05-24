@@ -50,18 +50,10 @@ variable "private_subnet_id" {
 variable "ecs_nodes_sg_id" {
    type = string
 }
-
-# variable "vpc_id" {
-#   type = "string"
-# }
-
-# variable "vpc_cidr" {
-#   type = "string"
-# }
-
 variable "security_group" {
   type = list(any)
 }
 variable containerimage {type=string}
 
 variable "retention_in_days" {type=number}
+variable account_id {type=any}
