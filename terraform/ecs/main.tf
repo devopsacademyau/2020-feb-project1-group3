@@ -153,3 +153,4 @@ resource "aws_cloudwatch_log_group" "log" {
   name              = "/ecs/${var.projectname}"
   retention_in_days = var.retention_in_days
 }
+data "aws_caller_identity" "current" {}

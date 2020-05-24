@@ -45,12 +45,13 @@ az = [
     "ap-southeast-2b"
 ]
 inst_type = "t2.micro"
-inst_key = "awskey"
+inst_key = ""
 ami_id = "ami-064db566f79006111"
 asg_desired_capac = "2"
 asg_max_size = "2"
 asg_min_size = "1"
 account_id = ""
-containerimage = "${var.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.projectname}-ecr:latest"
+# containerimage = TF_VAR_containerimage
+# containerimage = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.projectname}-ecr:${var.sha}"
 # containerimage = "048355378787.dkr.ecr.ap-southeast-2.amazonaws.com/pr1-grp3-ecr:1a109f0"
 retention_in_days = 30
